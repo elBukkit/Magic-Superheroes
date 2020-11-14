@@ -1,0 +1,90 @@
+doc_attack_left:
+ actions:
+  cast:
+  - class: Damage
+ effects:
+  cast: 
+  - location: origin
+    sound: entity_zombie_attack_iron_door
+    sound_volume: 0.5
+    sound_pitch: 1.5
+  - location: target
+    particle: sweep_attack
+ parameters:
+  range: 10
+  damage: 3
+  target: other_entity
+  target_type: Damageable
+  cooldown: 2000
+
+doc_attack_right:
+ inherit: doc_attack_left
+
+doc_walk:
+  passive: true
+  triggers:
+  - trigger: sprint
+  actions:
+    cast:
+    - class: SpawnEntity
+      type: armor_stand
+      invisible: true
+      invulnerable: true
+      helmet: tentacles
+      silent: true
+      set_target: true
+    - class: Delay
+      delay: 100
+    - class: Asynchronous
+      actions:
+      - class: Repeat
+        repeat: infinite
+        actions:
+        - class: Delay
+          delay: 500
+        - class: CheckVelocity
+          invert: true
+          min_speed: 0.1
+          actions:
+          - class: ModifyEntity
+            helmet: tentacles1
+          - class: Delay
+            delay: 250
+          - class: ModifyEntity
+            helmet: tentacles2
+          - class: Delay
+            delay: 250
+          - class: ModifyEntity
+            helmet: tentacles
+    - class: MountArmorStand
+    - class: Undo
+      cancel: true
+      target_spell: doc_walk
+      target_caster: true
+  parameters:
+    undo: 100
+    target: self
+    mount_name: Doc Ock
+    mount_target: true
+    helmet_item: tentacles
+    start_speed: 0
+    braking: 0.005
+    min_speed: -0.5
+    max_speed: 0.5
+    max_acceleration: 0.05
+    max_deceleration: 0.05
+    steer_speed: 0.5
+    fall_protection: 8000
+    controllable: true
+    strafe_controllable: 0.5
+    gravity: 9.81
+    terminal_velocity: 50
+    air_controllable: false
+    max_height: 255
+    max_height_above_ground: 0
+    armor_stand_pitch: 0.2
+    max_ascend: 1
+    height_check_radius: 1
+    armor_stand_invisible: true
+    armor_stand_marker: false
+    mount_untargetable: false

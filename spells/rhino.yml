@@ -1,28 +1,21 @@
 rush:
- cancel_effects: true
- actions:
-  cast:
-  - class: Repeat
-    actions:
-    - class: Parallel
+  cancel_effects: true
+  actions:
+    cast:
+    - class: Repeat
       actions:
+      - class: Parallel
+        actions:
         - class: PlaySound
           sound: block_stone_step
           volume: 0.5
-        - class: Retarget
-          range: 1
-          actions:
-          - class: CheckBlock
-            allowed: solid
-            actions:
-            - class: ChangeContext
-              target_caster: true
-              actions:
-              - class: Damage
-            - class: Stop
         - class: ChangeContext
           target_caster: true
+          source_offset: 0,1,0
           actions:
+          - class: Sphere
+            actions:
+            - class: BreakBlock
           - class: AreaOfEffect
             actions:
             - class: Velocity
@@ -30,31 +23,41 @@ rush:
             - class: Damage
           - class: Velocity
             speed: 2
-    - class: Delay
- effects:
-  cast:
-  - location: origin
-    source_location: body
-    effectlib: 
-     class: Trace
-     particle: spell
-     particle_count: 5
-     particle_offset_x: 1.5
-     particle_offset_y: 1.5
-     particle_offset_z: 1.5
- parameters:
-  target: none
-  target_self: false
-  target_type: Damageable
-  range: 3
-  hitbox: false
-  radius: 2
-  source_pitch_min: 90
-  source_pitch_max: 0
-  damage: 3
-  target_breakables: 1
-  cooldown: 5000
-  magic_damage: false
-  instant_block_effects: true
-  repeat: 60
-  delay: 100
+      - class: Delay
+  effects:
+    break:
+    - location: target
+      sound_volume: 0.2
+      particle: block_crack
+      particle_count: 5
+      particle_offset_x: 1
+      particle_offset_y: 1
+      particle_offset_z: 1
+    cast:
+    - location: origin
+      source_location: body
+      effectlib:
+        class: Trace
+        particle: spell
+        particle_count: 5
+        particle_offset_x: 1.5
+        particle_offset_y: 1.5
+        particle_offset_z: 1.5
+  parameters:
+    target: none
+    target_self: false
+    target_type: Damageable
+    range: 0
+    hitbox: false
+    radius: 2
+    undo: 5000
+    break_durability: 500
+    source_pitch_min: 90
+    source_pitch_max: 0
+    damage: 3
+    target_breakables: 1
+    cooldown: 5000
+    magic_damage: false
+    instant_block_effects: true
+    repeat: 50
+    delay: 100

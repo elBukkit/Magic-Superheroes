@@ -87,54 +87,145 @@ spider_wall_climb:
   target: block
 
 web_string:
- actions:
-  cast:
-  - class: CustomProjectile
-    actions:
-    - class: ChangeContext
-      swap_source_and_target: true
+  cancel_effects: true
+  actions:
+    alternate_sneak:
+    - class: CustomProjectile
       actions:
-      - class: FallProtection
-        duration: 8000
-      - class: Repeat
-        repeat: 5
+      - class: Disarm
+    alternate_down:
+    - class: ChangeContext
+      target_offset: 0,-1,0
+      actions:
+      - class: CheckBlock
+        allowed: all_air
+        actions:
+        - class: CustomProjectile
+          start: 2
+          range: 16
+          actions:
+          - class: ChangeContext
+            swap_source_and_target: true
+            actions:
+            - class: Velocity
+              push: -1
+            - class: FallProtection
+          - class: Delay
+            delay: 500
+          - class: PlaySound
+            sound: entity_player_attack_knockback
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: Velocity
+              push: 0.5
+              y_offset: 0.25
+    alternate_up:
+    - class: CustomProjectile
+      hit_effects: up
+      actions:
+      - class: ChangeContext
+        swap_source_and_target: true
         actions:
         - class: Velocity
-          push: -1
+          push: -1.5
         - class: Delay
-          delay: 100
-      - class: Velocity
-        push: -3
-      - class: Delay
-        delay: 500
-      - class: AreaOfEffect
+          delay: 200
+        - class: Repeat
+          repeat: 20
+          actions:
+          - class: Velocity
+            push: -0.2
+          - class: Delay
+            delay: 250
+        - class: FallProtection
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: ChangeContext
+        swap_source_and_target: true
         actions:
-        - class: Damage
- effects:
-  tick:
-  - location: target
-    particle: item_crack
-    material: cobweb
-    particle_count: 3
-    particle_offset_x: 0.01
-    particle_offset_y: 0.01
-    particle_offset_z: 0.01
-  cast:
-  - sound: magic.zap_crack
-    sound_pitch: 2
-    sound_volume: 0.1
-    location: origin
- parameters:
-  radius: 2
-  y_radius: 2
-  damage: 6
-  cooldown: 1000
-  velocity: 500
-  undo: 2000
-  range: 64
-  allow_max_range: true
-  target_self: false
-  target: other
+        - class: FallProtection
+        - class: Velocity
+          push: -3
+          y_offset: 0.5
+  effects:
+    land:
+    - sound: block_stone_step
+      sound_pitch: 0.7
+    - class: EffectRing
+      particle: block_crack
+      source_location: feet
+      period: 4
+      particle_count: 80
+      radius: 4
+      particle_offset_x: 0.9
+      particle_offset_z: 0.9
+      particle_offset_y: 0.1
+    up:
+    - location: target
+      effectlib:
+       class: Line
+       duration: 10000
+       iterations: 1
+       particles: 20
+       particle: item_crack
+       material: cobweb
+    tick:
+    - location: target
+      particle: item_crack
+      material: cobweb
+      particle_count: 3
+      particle_offset_x: 0.01
+      particle_offset_y: 0.01
+      particle_offset_z: 0.01
+    alternate_sneak:
+    - sound: magic.zap_crack
+      sound_pitch: 2
+      sound_volume: 0.1
+      location: origin
+    alternate_up:
+    - sound: magic.zap_crack
+      sound_pitch: 2
+      sound_volume: 0.1
+      location: origin
+    cast:
+    - sound: magic.zap_crack
+      sound_pitch: 2
+      sound_volume: 0.1
+      location: origin
+      effectlib:
+       class: Trace
+       particle: spell
+       particle_count: 1
+       duration: 1000
+       particle_offset_x: 0.5
+       particle_offset_y: 0.5
+       particle_offset_z: 0.5
+  alternate_sneak_parameters:
+    target: other_entity
+    range: 16
+    cooldown: 10000
+    keep_in_inventory: true
+  alternate_down_parameters:
+    target_self: false
+    cooldown: 15000
+    target: block
+    allow_max_range: true
+    range: 2
+    radius: 3
+    y_radius: 2
+    damage: 6
+  alternate_up_parameters:
+    target: block
+  parameters:
+    cooldown: 1000
+    duration: 5000
+    velocity: 500
+    undo: 2000
+    range: 64
+    target_self: false
+    target: other
 
 web_hang:
  cast_on_no_target: false
@@ -210,125 +301,126 @@ web_hang:
   range: 16
 
 web_ball:
- actions:
-  alternate_sneak:
-  - class: CustomProjectile
-    tick_effects: big
-    actions:
-    - class: CheckBlock
+  actions:
+    alternate_sneak:
+    - class: CustomProjectile
+      tick_effects: big
       actions:
-      - class: ChangeContext
-        target_attachment: true
+      - class: CheckBlock
+        allowed: solid
         actions:
-        - class: ModifyBlock
-    - class: AreaOfEffect
+        - class: ChangeContext
+          target_attachment: true
+          actions:
+          - class: ModifyBlock
+      - class: AreaOfEffect
+        actions:
+        - class: PlayEffects
+          effects: hit_entity
+        - class: Damage
+        - class: Velocity
+          push: 1.5
+        - class: PotionEffect
+    cast:
+    - class: CustomProjectile
       actions:
-      - class: PlayEffects
-        effects: hit_entity
+      - class: CheckBlock
+        allowed: solid
+        actions:
+        - class: ChangeContext
+          target_attachment: true
+          actions:
+          - class: ModifyBlock
       - class: Damage
       - class: Velocity
-        push: 1.5
+        push: 0.75
       - class: PotionEffect
-  cast: 
-  - class: CustomProjectile
-    actions:
-    - class: CheckBlock
-      actions:
-      - class: ChangeContext
-        target_attachment: true
-        actions:
-        - class: ModifyBlock
-    - class: Damage
-    - class: Velocity
-      push: 0.75
-    - class: PotionEffect
- effects:
-  big:
-  - location: target
-    source_location: body
-    particle: item_crack
-    material: cobweb
-    particle_count: 15
-    particle_data: 0.05
-    particle_offset_x: 0.5
-    particle_offset_z: 0.5
-    particle_offset_y: 0.5
-  cast:
-  - location: origin
-    sound: magic.zap_crack
-    sound_pitch: 2
-    sound_volume: 0.1
-    particle: fireworks_spark
-    particle_count: 15
-    particle_data: 0.05
-    particle_offset_x: 0.01
-    particle_offset_z: 0.01
-    particle_offset_y: 0.01
-  tick:
-  - location: target
-    particle: item_crack
-    material: cobweb
-    particle_count: 5
-    particle_data: 0.05
-    particle_offset_x: 0.15
-    particle_offset_z: 0.15
-    particle_offset_y: 0.15
-  hit:
-  - location: target
-    particle: fireworks_spark
-    sound: entity_magma_cube_squish
-    sound_volume: 0.5
-    sound_pitch: 2
-    particle_count: 5
-    particle_data: 0.05
-    particle_offset_x: 0.01
-    particle_offset_z: 0.01
-    particle_offset_y: 0.01
-  hit_entity: 
-  - location: target
-    target_location: feet
-    effectlib:
-     class: AnimatedBall
-     particle: item_crack
-     y_factor: 0.75
-     x_factor: 0.5
-     z_factor: 0.5
-     material: cobweb
-     duration: $duration
-     particles: 50
-  undo:
-  - location: target
-    sound: block_wool_break
-    particle: block_crack
-    material: cobweb
-    particle_count: 25
-    particle_offset_x: .5
-    particle_offset_y: .5
-    particle_offset_z: .5
- headshot_parameters:
-  add_effects:
-   blindness: 1
- alternate_sneak_parameters:
-  radius: 2
-  hitbox_size: 0.5
-  cooldown: 5000
-  damage: 5
-  add_effects:
-   slow: 10
- parameters:
-  hitbox_size: 0.1
-  speed: 0.2
-  cooldown: 250
-  brush: cobweb
-  transparent: transparent_to_construction,plants,snow
-  check_destructible: false
-  alow_max_range: true
-  range: 32
-  damage: 1
-  add_effects:
-   slow: 1
-  velocity: 50
-  duration: 5000
-  undo: 2000
-  push: 1
-  target: other
+  effects:
+    big:
+    - location: target
+      source_location: body
+      particle: item_crack
+      material: cobweb
+      particle_count: 15
+      particle_data: 0.05
+      particle_offset_x: 0.5
+      particle_offset_z: 0.5
+      particle_offset_y: 0.5
+    cast:
+    - location: origin
+      sound: magic.zap_crack
+      sound_pitch: 2
+      sound_volume: 0.1
+      particle: fireworks_spark
+      particle_count: 15
+      particle_data: 0.05
+      particle_offset_x: 0.01
+      particle_offset_z: 0.01
+      particle_offset_y: 0.01
+    tick:
+    - location: target
+      particle: item_crack
+      material: cobweb
+      particle_count: 5
+      particle_data: 0.05
+      particle_offset_x: 0.15
+      particle_offset_z: 0.15
+      particle_offset_y: 0.15
+    hit:
+    - location: target
+      particle: fireworks_spark
+      sound: entity_magma_cube_squish
+      sound_volume: 0.5
+      sound_pitch: 2
+      particle_count: 5
+      particle_data: 0.05
+      particle_offset_x: 0.01
+      particle_offset_z: 0.01
+      particle_offset_y: 0.01
+    hit_entity:
+    - location: target
+      target_location: feet
+      effectlib:
+        class: AnimatedBall
+        particle: item_crack
+        y_factor: 0.75
+        x_factor: 0.5
+        z_factor: 0.5
+        material: cobweb
+        duration: $duration
+        particles: 50
+    undo:
+    - location: target
+      sound: block_wool_break
+      particle: block_crack
+      material: cobweb
+      particle_count: 25
+      particle_offset_x: 0.5
+      particle_offset_y: 0.5
+      particle_offset_z: 0.5
+  headshot_parameters:
+    add_effects:
+      blindness: 1
+  alternate_sneak_parameters:
+    radius: 2
+    hitbox_size: 0.5
+    cooldown: 5000
+    damage: 5
+    add_effects:
+      slow: 10
+  parameters:
+    hitbox_size: 0.1
+    speed: 0.2
+    cooldown: 250
+    brush: cobweb
+    transparent: transparent_to_construction,plants,snow
+    check_destructible: false
+    range: 32
+    damage: 1
+    add_effects:
+      slow: 1
+    velocity: 50
+    duration: 5000
+    undo: 2000
+    push: 1
+    target: other

@@ -1,0 +1,97 @@
+wolverine_dash:
+ cancel_effects: true
+ actions: 
+  cast: 
+  - class: Velocity
+ effects: 
+  cast: 
+  - location: origin
+    sound: entity_ender_dragon_flap
+    sound_pitch: 0.5
+    effectlib: 
+     class: Trace
+     particle: redstone
+     particle_size: 0.5
+     color: "ffd700"
+     duration: 500
+     particle_count: 5
+     particle_offset_x: 1
+     particle_offset_y: 1
+     particle_offset_z: 1
+ parameters:
+  target: self
+  speed: 1.5
+  cooldown: 3000
+
+wolverine_rage:
+ actions: 
+  cast: 
+  - class: PotionEffect
+ effects:
+  cast:
+  - location: origin
+    sound: item_totem_use
+    sound_pitch: 2
+    effectlib:
+     class: Trace
+     duration: $duration
+     particle: redstone
+     particle_size: 0.5
+     color: "dc143c"
+     particle_count: 5
+     particle_offset_x: 1
+     particle_offset_y: 1
+     particle_offset_z: 1
+ parameters: 
+  target: self
+  effects_particles: false
+  add_effects:
+   increase_damage: 1
+   damage_resistance: 0
+  duration: 5000
+  cooldown: 15000
+
+bleeding:
+  passive: true
+  toggleable: false
+  triggers:
+  - trigger: damage_dealt
+    damage_type: physical
+  actions:
+    cast:
+    - class: Probability
+      actions:
+      - class: Delay
+        delay: 100
+      - class: Message
+        message_type: "action_bar"
+        message_key: bleed
+      - class: PlayEffects
+        effects: hit
+      - class: Repeat
+        actions:
+        - class: Damage
+        - class: Delay
+  effects:
+    hit:
+    - location: target
+      target_location: feet
+      effectlib:
+       class: AnimatedBall
+       particle: block_crack
+       material: redstone_block
+       iterations: 1
+       x_factor: 0.5
+       z_factor: 0.5
+       y_factor: 1
+       duration: 3000
+       particle_offset_x: 0.1
+       particle_offset_y: 0.1
+       particle_offset_z: 0.1
+       disappear_with_target_entity: true
+  parameters:
+    delay: 1000
+    target: damage_target
+    probability: 0.3
+    repeat: 3
+    damage: 1

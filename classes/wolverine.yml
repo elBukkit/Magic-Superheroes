@@ -1,0 +1,6 @@
+wolverine:
+ inherit: base
+ protection: 
+  physical: 0.5
+ spells:
+ - bleeding

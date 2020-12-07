@@ -1,6 +1,12 @@
 wolverine:
- inherit: base
- protection: 
-  physical: 0.5
- spells:
- - bleeding
+  inherit: base
+  potion_effects: 
+  - jump:0
+  - speed:0
+  - regeneration:2
+  - fast_digging:2
+  protection:
+    physical: 0.5
+  class_items:
+  - wolverine_left
+  - wolverine_right

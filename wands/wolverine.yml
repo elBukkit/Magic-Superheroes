@@ -1,64 +1,74 @@
-wolverine:
-    hidden: true
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    mode: inventory
-    quick_cast: true
-    icon: shield{CustomModelData:18022}
-    icon_inactive: stick{CustomModelData:18047}
-    icon_inactive_delay: 300
-    drop: toggle
-    left_click: none
-    right_click: none
-    cast_location: 1,-0.6,0.5
-    block_chance: 1
-    block_cooldown: 5000
-    block_fov: 1
-    class: wolverine
-    potion_effects: jump,speed,fast_digging:1,regeneration:1
-    item_attributes:
-      GENERIC_ATTACK_DAMAGE: 10
-    effects:
-        spell_blocked: 
-        -  location: origin
-           particle: fireworks_spark
-           particle_count: 5
-           particle_data: 0.1
-           particle_offset_x: 0.1
-           particle_offset_y: 0.1
-           particle_offset_z: 0.1
-        open:
-        -  sound: magic.wandup
-           sound_volume: 1
-           sound_pitch: 2
-           location: origin
-        close:
-        -  sound: magic.wanddown
-           sound_volume: 1
-           sound_pitch: 2
-           location: origin
-        swing:
-        -  sound: magic.wanddown
-           sound_volume: 1
-           sound_pitch: 2
-           location: origin
-           particle: sweep_attack
-           particle_count: 3
-           particle_offset_x: 0
-           particle_offset_y: 0.1
-           particle_offset_z: 0
-        hit_entity:
-        -  location: origin
-           sound: entity_player_attack_crit
-           sound_pitch: 2
-           particle: block_crack
-           material: redstone_block
-           particle_count: 3
-           particle_offset_x: 0.1
-           particle_offset_y: 0.1
-           particle_offset_z: 0.1
-    spells:
-    - wolverine_dash
-    - wolverine_rage
+wolverine_right:
+  hidden: true
+  bound: true
+  keep: true
+  undroppable: true
+  indestructible: true
+  mode: inventory
+  quick_cast: true
+  icon: netherite_sword{CustomModelData:18022}
+  icon_inactive: stick{CustomModelData:18047}
+  icon_inactive_delay: 300
+  drop: toggle
+  left_click: none
+  right_click: none
+  cast_location: 1,-0.6,0.5
+  class: wolverine
+  active_effects: true
+  effects:
+    spell_blocked:
+    - location: origin
+      particle: fireworks_spark
+      particle_count: 5
+      particle_data: 0.1
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+    open:
+    - sound: magic.wandup
+      sound_volume: 1
+      sound_pitch: 2
+      location: origin
+    close:
+    - sound: magic.wanddown
+      sound_volume: 1
+      sound_pitch: 2
+      location: origin
+    swing:
+    - sound: magic.wanddown
+      sound_volume: 1
+      sound_pitch: 2
+      location: origin
+      particle: sweep_attack
+      particle_count: 3
+      particle_offset_x: 0
+      particle_offset_y: 0.1
+      particle_offset_z: 0
+    hit_entity:
+    - location: origin
+      sound: entity_player_attack_crit
+      sound_pitch: 2
+      particle: block_crack
+      material: redstone_block
+      particle_count: 3
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+  spells:
+  - wolverine_dash
+  - wolverine_rage
+  - bleeding
+
+wolverine_left:
+ inherit: wolverine_right
+ icon: shield{CustomModelData:18022}
+ block_chance: 1
+ block_cooldown: 5000
+ block_mage_cooldown: 3000
+ block_fov: 1
+ mode: none
+ spells: []
+ drop: none
+ right_click: none
+ left_click: none
+ swap: none
